@@ -9,12 +9,12 @@ import (
 type searchInput struct {
 	Make   string `json:"make"`
 	Model  string `json:"model"`
-	Year   string `json:"year"`
+	Year   int    `json:"year"`
 	Budget int    `json:"budget"`
 }
 
 type SearchInteractor interface {
-	Search(make, model, year string, budget int) []usecases.SearchResult
+	Search(make, model string, year, budget int) []usecases.SearchResult
 }
 
 type WebserviceHandler struct {

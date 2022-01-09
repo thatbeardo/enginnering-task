@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"engineering-task/domain"
+	"fmt"
 )
 
 type Suggestion struct {
@@ -40,8 +41,8 @@ type SearchInteractor struct {
 	Logger        Logger
 }
 
-func (si SearchInteractor) Search(make, model, year string, price int) []SearchResult {
-	si.CarRepository.GetAllCars()
-
+func (si SearchInteractor) Search(make, model string, year, price int) []SearchResult {
+	cars := si.CarRepository.GetAllCars()
+	si.Logger.Log(fmt.Sprintf("Scanning through %d records", len(cars)))
 	return []SearchResult{}
 }
