@@ -43,9 +43,9 @@ func TestHandleRequest_PostValidPayload_StatusOK(t *testing.T) {
 	msi := mocks.SearchInteractor{
 		ExpectedMake:   "Tesla",
 		ExpectedModel:  "Model Y",
-		ExpectedYear:   "2019",
+		ExpectedYear:   2019,
 		ExpectedBudget: 50000,
-		Results:        []usecases.SearchResult{},
+		Result:         usecases.SearchResult{},
 		T:              t,
 	}
 	rr := performRequest(t, "POST", "/", validPayload, msi)

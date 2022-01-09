@@ -11,18 +11,18 @@ import (
 type SearchInteractor struct {
 	ExpectedMake   string
 	ExpectedModel  string
-	ExpectedYear   string
+	ExpectedYear   int
 	ExpectedBudget int
-	Results        []usecases.SearchResult
+	Result         usecases.SearchResult
 	T              *testing.T
 }
 
-func (si SearchInteractor) Search(make, model string, year, budget int) []usecases.SearchResult {
+func (si SearchInteractor) Search(make, model string, year, budget int) usecases.SearchResult {
 	assert.Equal(si.T, si.ExpectedMake, make)
 	assert.Equal(si.T, si.ExpectedModel, model)
 	assert.Equal(si.T, si.ExpectedYear, year)
 	assert.Equal(si.T, si.ExpectedBudget, budget)
-	return []usecases.SearchResult{}
+	return si.Result
 }
 
 type CarRepository struct {

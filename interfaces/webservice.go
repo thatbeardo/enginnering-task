@@ -14,7 +14,7 @@ type searchInput struct {
 }
 
 type SearchInteractor interface {
-	Search(make, model string, year, budget int) []usecases.SearchResult
+	Search(make, model string, year, budget int) usecases.SearchResult
 }
 
 type WebserviceHandler struct {

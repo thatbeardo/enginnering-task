@@ -3,6 +3,7 @@ package usecases
 import (
 	"engineering-task/domain"
 	"fmt"
+	"strings"
 )
 
 type Suggestion struct {
@@ -41,8 +42,24 @@ type SearchInteractor struct {
 	Logger        Logger
 }
 
-func (si SearchInteractor) Search(make, model string, year, price int) []SearchResult {
+func (si SearchInteractor) Search(make, model string, year, price int) SearchResult {
 	cars := si.CarRepository.GetAllCars()
 	si.Logger.Log(fmt.Sprintf("Scanning through %d records", len(cars)))
-	return []SearchResult{}
+
+	totalCars := 0
+	for _, car := range cars {
+		if isCompleteMatch(make, model, year, price, car) {
+			totalCars += car.VehicleCount
+		}
+	}
+
+	return SearchResult{
+		TotalCount: totalCars,
+	}
+}
+
+func isCompleteMatch(make, model string, year, price int, car domain.Car) bool {
+	return strings.HasPrefix(strings.ToLower(car.Make), strings.ToLower(make)) &&
+		strings.HasPrefix(strings.ToLower(car.Model), strings.ToLower(model)) &&
+		car.Year == year && car.Price == price
 }
