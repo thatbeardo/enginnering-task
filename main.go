@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	dbCarRepository := interfaces.NewDbCarRepository()
+	carRepository := interfaces.NewCarRepository()
 	searchInteractor := usecases.SearchInteractor{
-		CarRepository: dbCarRepository,
+		CarRepository: carRepository,
 	}
 
 	http.HandleFunc("/search", interfaces.HandleRequest(searchInteractor))

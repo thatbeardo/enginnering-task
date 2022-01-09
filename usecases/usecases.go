@@ -42,5 +42,6 @@ type SearchInteractor struct {
 
 func (si SearchInteractor) Search(make, model, year string, price int) []SearchResult {
 	si.CarRepository.GetAllCars()
+
 	return []SearchResult{}
 }

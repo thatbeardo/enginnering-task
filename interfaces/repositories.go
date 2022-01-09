@@ -4,13 +4,12 @@ import (
 	"engineering-task/domain"
 )
 
-type dbCarRepository struct {
+type carRepository struct{}
+
+func (cr carRepository) GetAllCars() []domain.Car {
+	return allCars()
 }
 
-func (dcr dbCarRepository) GetAllCars() []domain.Car {
-	return []domain.Car{{Make: "Tesla", Model: "Y", Year: "2010", Price: 123}}
-}
-
-func NewDbCarRepository() dbCarRepository {
-	return dbCarRepository{}
+func NewCarRepository() carRepository {
+	return carRepository{}
 }
