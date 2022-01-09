@@ -16,7 +16,7 @@ var cars = []domain.Car{
 	{Make: "Honda", Model: "CRV", Year: 2018, Price: 60000, VehicleCount: 50},
 	{Make: "Kia", Model: "EV6", Year: 2019, Price: 50000, VehicleCount: 30},
 	{Make: "Kia", Model: "EV6", Year: 2020, Price: 60000, VehicleCount: 30},
-	{Make: "Ford", Model: "Mach E", Year: 2020, Price: 60000, VehicleCount: 10},
+	{Make: "Ford", Model: "Mach E", Year: 2020, Price: 60000, VehicleCount: 4},
 	{Make: "Tesla", Model: "Model Y", Year: 2018, Price: 40000, VehicleCount: 60},
 	{Make: "Hyundai", Model: "Kona", Year: 2018, Price: 50000, VehicleCount: 60},
 	{Make: "Hyundai", Model: "Kona", Year: 2019, Price: 40000, VehicleCount: 60},
