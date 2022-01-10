@@ -96,8 +96,11 @@ func computeSuggestions(suggestionMap map[string]Suggestion) []Suggestion {
 	}
 
 	sort.Slice(suggestions, func(i, j int) bool {
-		return suggestions[i].Price <= suggestions[j].Price
+		return suggestions[i].Price < suggestions[j].Price
 	})
 
-	return suggestions
+	if len(suggestions) < 5 {
+		return suggestions
+	}
+	return suggestions[:5]
 }

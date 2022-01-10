@@ -29,6 +29,9 @@ var cars = []domain.Car{
 	{Make: "Hyundai", Model: "Kona", Year: 2018, Price: 50000, VehicleCount: 60},
 	{Make: "Hyundai", Model: "Kona", Year: 2019, Price: 40000, VehicleCount: 60},
 	{Make: "Hyundai", Model: "Kona", Year: 2019, Price: 70000, VehicleCount: 55},
+	{Make: "Audi", Model: "Qtron", Year: 2021, Price: 49000, VehicleCount: 55},
+	{Make: "Lucid", Model: "Air", Year: 2021, Price: 55000, VehicleCount: 55},
+	{Make: "Polestar", Model: "2", Year: 2019, Price: 46000, VehicleCount: 55},
 }
 
 func instantiateSearchInteractor(cars []domain.Car) usecases.SearchInteractor {
@@ -63,9 +66,11 @@ func TestSearch_ComputesTotalCarsFound_SearchResultUpdated(t *testing.T) {
 	}
 
 	expectedSuggestions := []usecases.Suggestion{
-		{Make: "Hyundai", Model: "Kona", Year: 2018, Price: 50000},
-		{Make: "Kia", Model: "EV6", Year: 2019, Price: 50000},
+		{Make: "Polestar", Model: "2", Year: 2019, Price: 46000},
+		{Make: "Audi", Model: "Qtron", Year: 2021, Price: 49000},
 		{Make: "Tesla", Model: "Model Y", Year: 2019, Price: 50000},
+		{Make: "Kia", Model: "EV6", Year: 2019, Price: 50000},
+		{Make: "Hyundai", Model: "Kona", Year: 2018, Price: 50000},
 	}
 
 	validateResults(t, searchResult, 30, 90, expectedPricingStatistics, expectedSuggestions)
