@@ -44,7 +44,7 @@ func TestSearch_ComputesTotalCarsFound_SearchResultUpdated(t *testing.T) {
 	searchResult := searchInteractor.Search("Tesla", "Model Y", 2019, 50000)
 	expectedPricingStatistics := []usecases.PricingStatistic{
 		{Vehicle: "TeslaModel Y", LowestPrice: 40000, HighestPrice: 50000, MedianPrice: 40000},
-		{Vehicle: "KiaEV6", LowestPrice: 50000, HighestPrice: 60000, MedianPrice: 50000},
+		{Vehicle: "KiaEV6", LowestPrice: 50000, HighestPrice: 60000, MedianPrice: 55000},
 		{Vehicle: "HyundaiKona", LowestPrice: 40000, HighestPrice: 70000, MedianPrice: 50000},
 	}
 	validateResults(t, searchResult, 30, 90, expectedPricingStatistics)

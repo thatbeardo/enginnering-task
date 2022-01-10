@@ -22,20 +22,7 @@ func computePricingStatistics(pricingStatisticsCandidates []string, pricingDataM
 		sort.Slice(data, func(i, j int) bool {
 			return data[i].price < data[j].price
 		})
-
-		totalVehicles := 0
-		for _, pricingData := range data {
-			totalVehicles += pricingData.vehicleCount
-		}
-		medianVehicleIndex := totalVehicles / 2
-		medianPrice := 0
-		for _, pricingData := range data {
-			medianVehicleIndex = medianVehicleIndex - pricingData.vehicleCount
-			if medianVehicleIndex <= 0 {
-				medianPrice = pricingData.price
-				break
-			}
-		}
+		medianPrice := computeMedianPrice(data)
 
 		pricing := PricingStatistic{
 			Vehicle:      carName,
@@ -46,4 +33,58 @@ func computePricingStatistics(pricingStatisticsCandidates []string, pricingDataM
 		pricingStatistics = append(pricingStatistics, pricing)
 	}
 	return pricingStatistics
+}
+
+func computeMedianPrice(data []pricingData) int {
+	totalVehicles := 0
+	medianPrice := 0
+	for _, pricingData := range data {
+		totalVehicles += pricingData.vehicleCount
+	}
+
+	if totalVehicles%2 == 0 {
+		medianPrice = computeEvenMedian(data, totalVehicles)
+	} else {
+		medianPrice = computeOddMedian(data, totalVehicles)
+	}
+	return medianPrice
+}
+
+func computeEvenMedian(data []pricingData, totalVehicles int) int {
+	firstMedianVehicleIndex := totalVehicles / 2
+	secondMedianVehicleIndex := firstMedianVehicleIndex + 1
+
+	firstVehiclePrice := 0
+	secondVehiclePrice := 0
+	for _, pricingData := range data {
+		if firstMedianVehicleIndex-pricingData.vehicleCount > 0 {
+			firstMedianVehicleIndex = firstMedianVehicleIndex - pricingData.vehicleCount
+		} else {
+			firstVehiclePrice = pricingData.price
+			break
+		}
+	}
+	for _, pricingData := range data {
+		if secondMedianVehicleIndex-pricingData.vehicleCount > 0 {
+			secondMedianVehicleIndex = secondMedianVehicleIndex - pricingData.vehicleCount
+		} else {
+			secondVehiclePrice = pricingData.price
+			break
+		}
+	}
+
+	return (firstVehiclePrice + secondVehiclePrice) / 2
+}
+
+func computeOddMedian(data []pricingData, totalVehicles int) int {
+	medianPrice := 0
+	medianVehicleIndex := (totalVehicles + 1) / 2
+	for _, pricingData := range data {
+		medianVehicleIndex = medianVehicleIndex - pricingData.vehicleCount
+		if medianVehicleIndex <= 0 {
+			medianPrice = pricingData.price
+			break
+		}
+	}
+	return medianPrice
 }
