@@ -2,8 +2,10 @@ package interfaces_test
 
 import (
 	"engineering-task/interfaces"
+	"engineering-task/interfaces/inject"
 	"engineering-task/mocks"
 	"engineering-task/usecases"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -92,4 +94,13 @@ func TestHandleRequest_PopulatedPayload_ResultPresentStatusOK(t *testing.T) {
 		T:      t,
 	})
 	inspectResponse(t, rr, http.StatusOK, `{"data":{"totalCount":500,"makeModelMatchCount":600,"pricingStatistics":[{"vehicle":"TeslaModel 3","lowestPrice":40000,"medianPrice":45000,"highestPrice":50000}],"suggestions":[]}}`)
+}
+
+func TestErrorConstructionFailed_ReturnEmptyBody_StatusMethodNotFound(t *testing.T) {
+	defer inject.Reset()
+	inject.Marshal = func(v interface{}) ([]byte, error) {
+		return []byte{}, errors.New("some-test-error")
+	}
+	rr := performRequest(t, "GET", "/", "", mocks.SearchInteractor{})
+	inspectResponse(t, rr, http.StatusMethodNotAllowed, ``)
 }

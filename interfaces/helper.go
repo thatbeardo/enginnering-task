@@ -3,6 +3,8 @@ package interfaces
 import (
 	"encoding/json"
 	"engineering-task/domain"
+	"engineering-task/interfaces/inject"
+	"fmt"
 	"log"
 )
 
@@ -10,9 +12,10 @@ func constructErrorResponse(status, errStr string) []byte {
 	resp := make(map[string]string)
 	resp["status"] = status
 	resp["error"] = errStr
-	jsonResp, err := json.Marshal(resp)
+	jsonResp, err := inject.Marshal(resp)
 	if err != nil {
-		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		log.Println(fmt.Sprintf("Error happened in JSON marshal. Err: %s", err))
+		return []byte{}
 	}
 	return jsonResp
 }
