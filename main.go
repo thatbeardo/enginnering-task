@@ -5,6 +5,7 @@ import (
 	"engineering-task/interfaces"
 	"engineering-task/usecases"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -16,7 +17,7 @@ func main() {
 	}
 
 	http.HandleFunc("/api/search", interfaces.HandleRequest(searchInteractor))
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Server up and running on port 8080")
-	}
+	fmt.Printf("Starting server at port 8080\n")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }

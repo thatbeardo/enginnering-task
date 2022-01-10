@@ -13,3 +13,50 @@ As the name suggests this layer is responsible to interact with everything outsi
 ## Infrastructure
 This part of the code is low level implementation details. Although this example doesn't have a database if we were to have a database such as postgres or mySQL, this is where we would place our code. It contians the low level instructions to store and retrieve data. A good test to consider is to make sure that we can swap out databases without changing a single line in usecases or domain. Interfaces by virtue is highly decoupled but if usecases or domains don't finch if databases are swapped out then we have built a very decoupled system.
 As an example the infrastructure layer in this project only has a custom logger. The custom loggers implements the interface defined in usecases and hence can be injected from main at runtime. Something similar would happen if we had a database.
+
+## Building the code
+Before you begin, make sure you have [Go installed](https://go.dev/doc/install) on your machine. To build the application, navigate to the directory and run
+```
+go build main.go
+```
+This will create an executable on your machine in the same directory as you are. The executable will be named 'main'.
+
+## Running the code
+Before you can run the code you built, you have to make sure it has permissions to be executed. To grant all permissions run command
+```
+sudo chmod 777 main
+```
+To run the executable you just built, execute command.
+```
+./main
+```
+You'll get a prompt asking you allow the executable to have networking permissions. Hit allow. The application is now running on your localhost at port 8080.
+
+## Using the application
+The default data store is a hardcoded function which returns the [dataset](https://github.com/Honcker/engineering_exercise/blob/main/Exercise_Dataset.json) present in the Github Repository. You can execute the following cURL commands in your SHELL to test the application out.
+
+```
+curl --location --request POST 'localhost:8080/api/search' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "make":"Volvo",
+    "model":"XC90",
+    "year":2019,
+    "budget": 56000
+}'
+```
+
+## Simulating Errors
+The application only supports a `POST` endpoint on path `/api/search`. Making a `GET` request for example will return a `405` status code signyfying an illegal method used to complete the request. Here's a command to get the error:
+```
+curl --location --request GET 'localhost:8080/api/search' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "make":"Volvo",
+    "model":"XC90",
+    "year":2019,
+    "budget": 56000
+}'
+```
+
+Since the application does not support an actual database, it is not possible to inspect results when a genuine database error occurs.
