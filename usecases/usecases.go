@@ -31,6 +31,7 @@ func (si SearchInteractor) Search(manufacturer, model string, year, price int) S
 			makeModelMatch += car.VehicleCount
 		}
 		if price == car.Price {
+			si.Logger.Log(fmt.Sprintf("Price match found for %s at price %d", car.Make+car.Model, price))
 			pricingStatisticsCandidates = append(pricingStatisticsCandidates, car.Make+car.Model)
 		}
 		if float32(price) >= 0.9*float32(car.Price) && float32(price) <= 1.1*float32(car.Price) {

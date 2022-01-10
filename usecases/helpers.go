@@ -16,7 +16,7 @@ func isMakeModelMatch(make, model string, car domain.Car) bool {
 }
 
 func computePricingStatistics(pricingStatisticsCandidates []string, pricingDataMap map[string][]pricingData) []PricingStatistic {
-	var pricingStatistics []PricingStatistic
+	pricingStatistics := []PricingStatistic{}
 	for _, carName := range pricingStatisticsCandidates {
 		data := pricingDataMap[carName]
 		sort.Slice(data, func(i, j int) bool {

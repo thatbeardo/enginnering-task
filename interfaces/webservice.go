@@ -13,6 +13,10 @@ type searchInput struct {
 	Budget int    `json:"budget"`
 }
 
+type searchResult struct {
+	Data usecases.SearchResult `json:"data"`
+}
+
 type SearchInteractor interface {
 	Search(make, model string, year, budget int) usecases.SearchResult
 }
@@ -33,9 +37,9 @@ func HandleRequest(SearchInteractor SearchInteractor) func(w http.ResponseWriter
 			}
 
 			wh := WebserviceHandler{SearchInteractor: SearchInteractor}
-			searchResults := wh.SearchInteractor.Search(payload.Make, payload.Model, payload.Year, payload.Budget)
+			data := wh.SearchInteractor.Search(payload.Make, payload.Model, payload.Year, payload.Budget)
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(searchResults)
+			json.NewEncoder(w).Encode(searchResult{Data: data})
 		} else {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
