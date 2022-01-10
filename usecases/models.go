@@ -23,11 +23,6 @@ type SearchResult struct {
 	Suggestions         []Car              `json:"suggestions"`
 }
 
-// SearchRepository provides methods to scan underlying persistence layer for data
-type SearchRepository interface {
-	Search(make, model, year string, budget int) []SearchResult
-}
-
 // Logger interface is to be injected during initialization of the SearchIterator struct
 type Logger interface {
 	Log(args ...interface{})
@@ -41,7 +36,7 @@ type Car struct {
 	Price int    `json:"price"`
 }
 
-// SearchInteractor provides concrete implementation of SearchRepository interface
+// SearchInteractor provides concrete implementation of SearchRepository field in WebserviceHandler struct
 type SearchInteractor struct {
 	CarRepository domain.CarRepository
 	Logger        Logger

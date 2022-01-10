@@ -3,7 +3,19 @@ package interfaces
 import (
 	"encoding/json"
 	"engineering-task/domain"
+	"log"
 )
+
+func constructErrorResponse(status, errStr string) []byte {
+	resp := make(map[string]string)
+	resp["status"] = status
+	resp["error"] = errStr
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+	}
+	return jsonResp
+}
 
 func allCars() []domain.Car {
 	var cars []domain.Car
