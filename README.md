@@ -14,6 +14,19 @@ As the name suggests this layer is responsible to interact with everything outsi
 This part of the code is low level implementation details. Although this example doesn't have a database if we were to have a database such as postgres or mySQL, this is where we would place our code. It contians the low level instructions to store and retrieve data. A good test to consider is to make sure that we can swap out databases without changing a single line in usecases or domain. Interfaces by virtue is highly decoupled but if usecases or domains don't finch if databases are swapped out then we have built a very decoupled system.
 As an example the infrastructure layer in this project only has a custom logger. The custom loggers implements the interface defined in usecases and hence can be injected from main at runtime. Something similar would happen if we had a database.
 
+## Testing the code
+The code is thoroughly tested and there's a script at the root of the project to fire all unit test cases and generate a comprehensive report that can be viewed in the browser. The script is called `cover.sh`. To execute this script you might have to give it permissions to be executed. Add permissions by running
+
+```
+sudo chmod 777 cover.sh
+```
+
+Once permissions are updated you can execute the script by running
+
+```
+./cover.sh
+```
+
 ## Building the code
 Before you begin, make sure you have [Go installed](https://go.dev/doc/install) on your machine. To build the application, navigate to the directory and run
 ```
