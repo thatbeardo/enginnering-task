@@ -1,3 +1,5 @@
+# Car Search API powered by GO
+
 A RESTful API that allows users to search the underlying store of cars based on certain search parameters. The API is built using Go Lang. The code is bifurcated into 4 main areas - domain, usecases, interfaces, and infrastructure.
 
 ## Domain
