@@ -96,11 +96,21 @@ func TestHandleRequest_PopulatedPayload_ResultPresentStatusOK(t *testing.T) {
 	inspectResponse(t, rr, http.StatusOK, `{"data":{"totalCount":500,"makeModelMatchCount":600,"pricingStatistics":[{"vehicle":"TeslaModel 3","lowestPrice":40000,"medianPrice":45000,"highestPrice":50000}],"suggestions":[]}}`)
 }
 
-func TestErrorConstructionFailed_ReturnEmptyBody_StatusMethodNotFound(t *testing.T) {
+func TestHandleRequest_ErrorConstructionFailed_StatusMethodNotFound(t *testing.T) {
 	defer inject.Reset()
 	inject.Marshal = func(v interface{}) ([]byte, error) {
 		return []byte{}, errors.New("some-test-error")
 	}
 	rr := performRequest(t, "GET", "/", "", mocks.SearchInteractor{})
 	inspectResponse(t, rr, http.StatusMethodNotAllowed, ``)
+}
+
+func TestHandleRequest_SearchInteractorError_StatusInternalServerError(t *testing.T) {
+	rr := performRequest(t, "POST", "/api/search", emptyPayload, mocks.SearchInteractor{
+		Result:    mockResult,
+		SearchErr: errors.New("test-error occured"),
+		T:         t,
+	})
+
+	inspectResponse(t, rr, http.StatusInternalServerError, `{"error":"test-error occured","status":"Internal Server Error Occured"}`)
 }

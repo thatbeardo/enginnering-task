@@ -6,8 +6,8 @@ import (
 
 type carRepository struct{}
 
-func (cr carRepository) GetAllCars() []domain.Car {
-	return allCars()
+func (cr carRepository) GetAllCars() ([]domain.Car, error) {
+	return allCars(), nil
 }
 
 // NewCarRepository is the factory function to return concrete implementations of the SearchInteractor interface

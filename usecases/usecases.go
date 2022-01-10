@@ -4,8 +4,11 @@ import (
 	"fmt"
 )
 
-func (si SearchInteractor) Search(manufacturer, model string, year, price int) SearchResult {
-	cars := si.CarRepository.GetAllCars()
+func (si SearchInteractor) Search(manufacturer, model string, year, price int) (SearchResult, error) {
+	cars, err := si.CarRepository.GetAllCars()
+	if err != nil {
+		return SearchResult{}, err
+	}
 	si.Logger.Log(fmt.Sprintf("Scanning through %d records", len(cars)))
 
 	totalCars := 0
@@ -55,5 +58,5 @@ func (si SearchInteractor) Search(manufacturer, model string, year, price int) S
 		MakeModelMatchCount: makeModelMatch,
 		PricingStatistics:   pricingStatistics,
 		Suggestions:         suggestions,
-	}
+	}, nil
 }

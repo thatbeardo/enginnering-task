@@ -15,6 +15,6 @@ func TestNewCarRepository_Instantiated_NotNil(t *testing.T) {
 
 func TestGetAllCars_ParsesReturnsCars_NonEmptyResultSet(t *testing.T) {
 	carRepo := interfaces.NewCarRepository()
-	cars := carRepo.GetAllCars()
+	cars, _ := carRepo.GetAllCars()
 	fmt.Println(cars)
 }

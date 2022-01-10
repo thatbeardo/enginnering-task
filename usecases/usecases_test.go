@@ -5,6 +5,7 @@ import (
 	"engineering-task/infrastructure"
 	"engineering-task/mocks"
 	"engineering-task/usecases"
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -58,7 +59,7 @@ func validateResults(t *testing.T, searchResult usecases.SearchResult,
 func TestSearch_ComputesTotalCarsFound_SearchResultUpdated(t *testing.T) {
 	searchInteractor := instantiateSearchInteractor(cars)
 
-	searchResult := searchInteractor.Search("TeSlA", "ModEl Y", 2019, 50000)
+	searchResult, _ := searchInteractor.Search("TeSlA", "ModEl Y", 2019, 50000)
 	expectedPricingStatistics := []usecases.PricingStatistic{
 		{Vehicle: "TeslaModel Y", LowestPrice: 40000, HighestPrice: 50000, MedianPrice: 40000},
 		{Vehicle: "KiaEV6", LowestPrice: 50000, HighestPrice: 60000, MedianPrice: 55000},
@@ -79,7 +80,7 @@ func TestSearch_ComputesTotalCarsFound_SearchResultUpdated(t *testing.T) {
 func TestSearch_VehicleSuggestions_SearchResultUpdated(t *testing.T) {
 	searchInteractor := instantiateSearchInteractor(cars)
 
-	searchResult := searchInteractor.Search("Acura", "IDX", 2020, 20000)
+	searchResult, _ := searchInteractor.Search("Acura", "IDX", 2020, 20000)
 	expectedPricingStatistics := []usecases.PricingStatistic{
 		{Vehicle: "AcuraIDX", LowestPrice: 19000, HighestPrice: 21000, MedianPrice: 20000},
 	}
@@ -91,4 +92,15 @@ func TestSearch_VehicleSuggestions_SearchResultUpdated(t *testing.T) {
 	}
 
 	validateResults(t, searchResult, 30, 90, expectedPricingStatistics, expectedSuggestions)
+}
+
+func TestSearch_ErrorOccured_ErrorReported(t *testing.T) {
+	carRepository := mocks.CarRepository{Cars: cars, Err: errors.New("test-error")}
+	searchInteractor := usecases.SearchInteractor{
+		CarRepository: carRepository,
+		Logger:        infrastructure.Logger{},
+	}
+
+	_, err := searchInteractor.Search("", "", 0, 0)
+	assert.Error(t, err, errors.New("test-error"))
 }

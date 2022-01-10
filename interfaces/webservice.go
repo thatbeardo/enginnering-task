@@ -19,7 +19,7 @@ type SearchResult struct {
 }
 
 type SearchInteractor interface {
-	Search(make, model string, year, budget int) usecases.SearchResult
+	Search(make, model string, year, budget int) (usecases.SearchResult, error)
 }
 
 type WebserviceHandler struct {
@@ -54,7 +54,13 @@ func HandleRequest(SearchInteractor SearchInteractor) func(w http.ResponseWriter
 		}
 
 		wh := WebserviceHandler{SearchInteractor: SearchInteractor}
-		data := wh.SearchInteractor.Search(payload.Make, payload.Model, payload.Year, payload.Budget)
+		data, err := wh.SearchInteractor.Search(payload.Make, payload.Model, payload.Year, payload.Budget)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			jsonResp := constructErrorResponse("Internal Server Error Occured", err.Error())
+			w.Write(jsonResp)
+			return
+		}
 		json.NewEncoder(w).Encode(SearchResult{Data: data})
 	}
 }

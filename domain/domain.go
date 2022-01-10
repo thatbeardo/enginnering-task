@@ -9,5 +9,5 @@ type Car struct {
 }
 
 type CarRepository interface {
-	GetAllCars() []Car
+	GetAllCars() ([]Car, error)
 }
