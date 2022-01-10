@@ -1,6 +1,7 @@
 package interfaces_test
 
 import (
+	"encoding/json"
 	"engineering-task/interfaces"
 	"engineering-task/mocks"
 	"engineering-task/usecases"
@@ -8,11 +9,22 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const validPayload = `{"make":"Tesla", "model":"Model Y", "year": 2019, "budget":50000}`
 const invalidPayload = `{"make":"Tesla", "model":"Model Y", "year": 2019, "budget":"50000"}`
 const emptyPayload = `{"make":"", "model":"", "year": 0, "budget":0}`
+
+var mockResult = usecases.SearchResult{
+	TotalCount:          500,
+	MakeModelMatchCount: 600,
+	PricingStatistics: []usecases.PricingStatistic{
+		{Vehicle: "TeslaModel 3", LowestPrice: 40000, HighestPrice: 50000, MedianPrice: 45000},
+	},
+	Suggestions: []usecases.Car{},
+}
 
 func performRequest(t *testing.T, method, path, body string, msi mocks.SearchInteractor) *httptest.ResponseRecorder {
 	req, err := http.NewRequest(method, path, strings.NewReader(body))
@@ -67,23 +79,14 @@ func TestHandleRequest_EmptyPayload_StatusOK(t *testing.T) {
 }
 
 func TestHandleRequest_PopulatedPayload_ResultPresentStatusOK(t *testing.T) {
-	rr := performRequest(t, "POST", "/", emptyPayload, mocks.SearchInteractor{
-		Result: usecases.SearchResult{
-			TotalCount:          500,
-			MakeModelMatchCount: 600,
-			PricingStatistics: []usecases.PricingStatistic{
-				{Vehicle: "TeslaModel 3", LowestPrice: 40000, HighestPrice: 50000, MedianPrice: 45000},
-			},
-			Suggestions: []usecases.Car{},
-		},
-		T: t,
-	})
 
-	// Check the response body is what we expect.
-	expected := `{"data":{"totalCount":500,"makeModelMatchCount":600,"pricingStatistics":[{"vehicle":"TeslaModel 3","lowestPrice":40000,"medianPrice":45000,"highestPrice":50000}],"suggestions":[]}}`
-	if rr.Body.String() != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
-	}
+	rr := performRequest(t, "POST", "/", emptyPayload, mocks.SearchInteractor{
+		Result: mockResult,
+		T:      t,
+	})
+	var response interfaces.SearchResult
+	json.Unmarshal([]byte(rr.Body.Bytes()), &response)
+
+	assert.Equal(t, response.Data, mockResult)
 	inspectResponse(t, rr, http.StatusOK)
 }
