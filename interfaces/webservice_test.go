@@ -65,3 +65,25 @@ func TestHandleRequest_EmptyPayload_StatusOK(t *testing.T) {
 
 	inspectResponse(t, rr, http.StatusOK)
 }
+
+func TestHandleRequest_PopulatedPayload_ResultPresentStatusOK(t *testing.T) {
+	rr := performRequest(t, "POST", "/", emptyPayload, mocks.SearchInteractor{
+		Result: usecases.SearchResult{
+			TotalCount:          500,
+			MakeModelMatchCount: 600,
+			PricingStatistics: []usecases.PricingStatistic{
+				{Vehicle: "TeslaModel 3", LowestPrice: 40000, HighestPrice: 50000, MedianPrice: 45000},
+			},
+			Suggestions: []usecases.Car{},
+		},
+		T: t,
+	})
+
+	// Check the response body is what we expect.
+	expected := `{"data":{"totalCount":500,"makeModelMatchCount":600,"pricingStatistics":[{"vehicle":"TeslaModel 3","lowestPrice":40000,"medianPrice":45000,"highestPrice":50000}],"suggestions":[]}}`
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
+	inspectResponse(t, rr, http.StatusOK)
+}
