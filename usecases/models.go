@@ -5,8 +5,8 @@ import "engineering-task/domain"
 type Suggestion struct {
 	Make  string
 	Model string
-	Year  string
-	Price string
+	Year  int
+	Price int
 }
 
 type pricingData struct {

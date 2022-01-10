@@ -88,3 +88,16 @@ func computeOddMedian(data []pricingData, totalVehicles int) int {
 	}
 	return medianPrice
 }
+
+func computeSuggestions(suggestionMap map[string]Suggestion) []Suggestion {
+	suggestions := []Suggestion{}
+	for key := range suggestionMap {
+		suggestions = append(suggestions, suggestionMap[key])
+	}
+
+	sort.Slice(suggestions, func(i, j int) bool {
+		return suggestions[i].Price <= suggestions[j].Price
+	})
+
+	return suggestions
+}
