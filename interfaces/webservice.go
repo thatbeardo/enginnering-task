@@ -14,14 +14,19 @@ type searchInput struct {
 	Budget int    `json:"budget"`
 }
 
+// SearchResult is the final payload sent back to the user
 type SearchResult struct {
 	Data usecases.SearchResult `json:"data"`
 }
 
+// SearchInteractor shadows the definition of underlying usecase layer
+// allowing any instance of this interface eligible to passed
+// to usecases
 type SearchInteractor interface {
 	Search(make, model string, year, budget int) (usecases.SearchResult, error)
 }
 
+// WebserviceHandler is used to make calls to underlying usecases
 type WebserviceHandler struct {
 	SearchInteractor SearchInteractor
 }

@@ -6,6 +6,7 @@ import (
 
 type carRepository struct{}
 
+// GetAllCars returns all vehicles present in data source
 func (cr carRepository) GetAllCars() ([]domain.Car, error) {
 	return allCars(), nil
 }
