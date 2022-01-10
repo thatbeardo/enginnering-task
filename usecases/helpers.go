@@ -89,8 +89,8 @@ func computeOddMedian(data []pricingData, totalVehicles int) int {
 	return medianPrice
 }
 
-func computeSuggestions(suggestionMap map[string]Suggestion) []Suggestion {
-	suggestions := []Suggestion{}
+func computeSuggestions(suggestionMap map[string]Car) []Car {
+	suggestions := []Car{}
 	for key := range suggestionMap {
 		suggestions = append(suggestions, suggestionMap[key])
 	}

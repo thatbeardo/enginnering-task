@@ -21,6 +21,7 @@ type WebserviceHandler struct {
 	SearchInteractor SearchInteractor
 }
 
+// HandleRequest acts as a handler for incoming requests on the /search path
 func HandleRequest(SearchInteractor SearchInteractor) func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
 		var payload searchInput

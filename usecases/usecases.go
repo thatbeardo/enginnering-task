@@ -12,7 +12,7 @@ func (si SearchInteractor) Search(manufacturer, model string, year, price int) S
 	makeModelMatch := 0
 	pricingStatisticsCandidates := []string{}
 	pricingDataMap := make(map[string][]pricingData)
-	suggestionMap := make(map[string]Suggestion)
+	suggestionMap := make(map[string]Car)
 
 	for _, car := range cars {
 
@@ -36,7 +36,7 @@ func (si SearchInteractor) Search(manufacturer, model string, year, price int) S
 		if float32(price) >= 0.9*float32(car.Price) && float32(price) <= 1.1*float32(car.Price) {
 			si.Logger.Log(fmt.Sprintf("Matched %s in price window %f and %f", car.Make, 0.9*float32(car.Price), 1.1*float32(car.Price)))
 			if _, present := suggestionMap[car.Make]; !present {
-				suggestionMap[car.Make] = Suggestion{
+				suggestionMap[car.Make] = Car{
 					Make:  car.Make,
 					Model: car.Model,
 					Year:  car.Year,

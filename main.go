@@ -14,6 +14,6 @@ func main() {
 		Logger:        infrastructure.Logger{},
 	}
 
-	http.HandleFunc("/search", interfaces.HandleRequest(searchInteractor))
+	http.HandleFunc("/api/search", interfaces.HandleRequest(searchInteractor))
 	http.ListenAndServe(":8080", nil)
 }

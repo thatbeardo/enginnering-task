@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// SearchInteractor provides mock implementation of the Search method.
 type SearchInteractor struct {
 	ExpectedMake   string
 	ExpectedModel  string
@@ -17,6 +18,7 @@ type SearchInteractor struct {
 	T              *testing.T
 }
 
+// Search inspects all the arguments passed to ensure data isn't lost in transit
 func (si SearchInteractor) Search(make, model string, year, budget int) usecases.SearchResult {
 	assert.Equal(si.T, si.ExpectedMake, make)
 	assert.Equal(si.T, si.ExpectedModel, model)
@@ -25,6 +27,7 @@ func (si SearchInteractor) Search(make, model string, year, budget int) usecases
 	return si.Result
 }
 
+// CarRepostiory provides mocked implementation for the GetAllCar() method
 type CarRepository struct {
 	Cars []domain.Car
 }

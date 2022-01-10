@@ -47,7 +47,7 @@ func validateResults(t *testing.T, searchResult usecases.SearchResult,
 	expectedTotalCount,
 	expectedMakeModelMatchCount int,
 	expectedPricingStatistic []usecases.PricingStatistic,
-	expectedSuggestions []usecases.Suggestion,
+	expectedSuggestions []usecases.Car,
 ) {
 	assert.Equal(t, expectedTotalCount, searchResult.TotalCount)
 	assert.Equal(t, expectedMakeModelMatchCount, searchResult.MakeModelMatchCount)
@@ -65,7 +65,7 @@ func TestSearch_ComputesTotalCarsFound_SearchResultUpdated(t *testing.T) {
 		{Vehicle: "HyundaiKona", LowestPrice: 40000, HighestPrice: 70000, MedianPrice: 50000},
 	}
 
-	expectedSuggestions := []usecases.Suggestion{
+	expectedSuggestions := []usecases.Car{
 		{Make: "Polestar", Model: "2", Year: 2019, Price: 46000},
 		{Make: "Audi", Model: "Qtron", Year: 2021, Price: 49000},
 		{Make: "Tesla", Model: "Model Y", Year: 2019, Price: 50000},
@@ -83,7 +83,7 @@ func TestSearch_VehicleSuggestions_SearchResultUpdated(t *testing.T) {
 	expectedPricingStatistics := []usecases.PricingStatistic{
 		{Vehicle: "AcuraIDX", LowestPrice: 19000, HighestPrice: 21000, MedianPrice: 20000},
 	}
-	expectedSuggestions := []usecases.Suggestion{
+	expectedSuggestions := []usecases.Car{
 		{Make: "Chevrolet", Model: "Bolt", Year: 2015, Price: 19000},
 		{Make: "Acura", Model: "IDX", Year: 2020, Price: 20000},
 		{Make: "Mazda", Model: "CX3", Year: 2017, Price: 21000},
